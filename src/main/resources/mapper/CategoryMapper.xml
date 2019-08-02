@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="com.zhw.tmall.mapper.CategoryMapper">
+    <select id="list"  resultType="Category">
+
+    select * from   category order by id desc
+        <if test="start!=null and count!=null">
+            limit #{start},#{count}
+        </if>
+    </select>
+    
+    <select id="total" resultType="int">
+        select count(*) from   category
+    </select>
+
+    <!--Mybatis 配置文件 useGeneratedKeys 参数只针对 insert 语句生效，默认为 false。当设置为 true 时，表示如果插入的表以自增列为主键，
+    则允许 JDBC 支持自动生成主键，并可将自动生成的主键返回。-->
+    <insert id="add"   keyProperty="id"  useGeneratedKeys="true" parameterType="Category">
+-- 为什么要加( name )
+      insert into category (NAME ) values (#{name})
+    </insert>
+<!--parameterType="Category"为啥不用加-->
+    <delete id="delete" parameterType="Category">
+        DELETE FROM category WHERE id=(#{id})
+
+    </delete>
+
+    <select id="get" resultType="Category">
+        select * from category  where id= #{id}
+    </select>
+    <update id="update" parameterType="Category">
+            update category set name=#{name} where id=#{id}
+    </update>
+</mapper>
