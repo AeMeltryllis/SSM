@@ -1,20 +1,21 @@
 package com.zhw.tmall.mapper;
 
 import com.zhw.tmall.pojo.Category;
-import com.zhw.tmall.util.Page;
-
+import com.zhw.tmall.pojo.CategoryExample;
 import java.util.List;
 
 public interface CategoryMapper {
-//    查询
-    List<Category> list(Page page);
+    int deleteByPrimaryKey(Integer id);
 
-    public int total();
+    int insert(Category record);
 
-    void add(Category category);
+    int insertSelective(Category record);
 
-    void delete(int id);
-    Category get(int id);
-    void  update(Category category);
+    List<Category> selectByExample(CategoryExample example);
 
+    Category selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Category record);
+
+    int updateByPrimaryKey(Category record);
 }

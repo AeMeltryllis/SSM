@@ -2,6 +2,8 @@ package com.zhw.tmall.controller;
 
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zhw.tmall.pojo.Category;
 import com.zhw.tmall.service.CategoryService;
 import com.zhw.tmall.util.ImageUtil;
@@ -28,11 +30,19 @@ public class CategoryController {
 
     @RequestMapping("admin_category_list")
     public String list(Model model, Page page){ //为什么这里不用ModelAndView了？
-        List<Category> categoryslist = categoryService.list(page);
-        int total = categoryService.total();
+//        List<Category> categoryslist = categoryService.list(page);
+//        int total = categoryService.total();
+//        page.setTotal(total);
+//        model.addAttribute("categoryslist",categoryslist);
+//        model.addAttribute("page",page);
+//        return "admin/listCategory";
+
+        PageHelper.offsetPage(page.getStart(),page.getCount());
+        List<Category> categories= categoryService.list();
+        int total = (int) new PageInfo<>(categories).getTotal();
         page.setTotal(total);
-        model.addAttribute("categoryslist",categoryslist);
-        model.addAttribute("page",page);
+        model.addAttribute("categoryslist", categories);
+        model.addAttribute("page", page);
         return "admin/listCategory";
 
     }
