@@ -7,7 +7,7 @@ public class Page {
     private int total; //总个数
     private String param; //参数
 
-    private static final int defaultCount = 3; //默认每页显示5条
+    private static final int defaultCount = 5; //默认每页显示5条
 
     public int getStart() {
         return start;

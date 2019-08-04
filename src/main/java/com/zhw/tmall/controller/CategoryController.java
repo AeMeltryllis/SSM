@@ -39,6 +39,7 @@ public class CategoryController {
 
         PageHelper.offsetPage(page.getStart(),page.getCount());
         List<Category> categories= categoryService.list();
+//        PageInfo<>(categories)为什么调用getTotal()
         int total = (int) new PageInfo<>(categories).getTotal();
         page.setTotal(total);
         model.addAttribute("categoryslist", categories);
