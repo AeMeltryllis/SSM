@@ -54,14 +54,14 @@ pageEncoding="UTF-8" import="java.util.*"%>
                     </tr>
                     </thead>
                     <tbody>
+                    <%--在这里输出图片--%>
                     <c:forEach items="${productList}" var="product">
                         <tr>
                             <td>${product.id}</td>
                             <td>
-
-                                    <%--<c:if test="${!empty p.firstProductImage}">--%>
-                                    <%--<img width="40px" src="img/productSingle/${p.firstProductImage.id}.jpg">--%>
-                                    <%--</c:if>--%>
+                <c:if test="${!empty product.firstProductImage}">
+                <img width="40px" src="img/productSingle/${product.firstProductImage.id}.jpg">
+                 </c:if>
 
                             </td>
                             <td>${product.name}</td>
