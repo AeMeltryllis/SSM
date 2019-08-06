@@ -20,18 +20,25 @@ public class PropertyValueServiceimpl implements PropertyValueService {
     @Autowired
     PropertyService propertyService;
 
-
+    /**
+     * 因为采用了ajax的异步刷新，所以在进入编辑属性{值}页面时必须拥有属性{值}实体，但因为没提供也没必要提供
+     * 添加方法，所以在编辑属性{值}页面获取属性分类时就初始化属性{值}并调用insert方法，其值【value】为null
+     * @param  product
+     */
     @Override
-    public void init(Product p) {
+    public void init(Product product) {
+/*通过产品获取cid，再通过cid获取属性分类*/
+        List<Property> propertyList = propertyService.list(product.getCid());
 
-        List<Property> pts = propertyService.list(p.getCid());
-
-        for (Property pt: pts) {
-            PropertyValue pv = get(pt.getId(),p.getId());
+        for (Property property: propertyList) {
+            /*获取ptid和pid*/
+            PropertyValue pv = get(property.getId(),product.getId());
             if(null==pv){
                 pv = new PropertyValue();
-                pv.setPid(p.getId());
-                pv.setPtid(pt.getId());
+                pv.setPid(product.getId());
+                pv.setPtid(property.getId());
+                pv.setValue("初始值");
+                /*这样数据库里就有属性{值}的记录了*/
                 propertyValueMapper.insert(pv);
             }
         }
@@ -59,6 +66,7 @@ public class PropertyValueServiceimpl implements PropertyValueService {
 
     @Override
     public List<PropertyValue> list(int pid) {
+
         PropertyValueExample example = new PropertyValueExample();
         example.createCriteria().andPidEqualTo(pid);
         List<PropertyValue> result = propertyValueMapper.selectByExample(example);

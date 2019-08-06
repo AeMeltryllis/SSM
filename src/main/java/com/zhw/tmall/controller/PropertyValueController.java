@@ -24,10 +24,11 @@ public class PropertyValueController {
     public String edit(Model model,int pid) {
         Product p = productService.get(pid);
         propertyValueService.init(p);
-        List<PropertyValue> pvs = propertyValueService.list(p.getId());
+        /*初始化后就能获取propertyValueList*/
+        List<PropertyValue> propertyValueList = propertyValueService.list(p.getId());
 
         model.addAttribute("p", p);
-        model.addAttribute("pvs", pvs);
+        model.addAttribute("propertyValueList", propertyValueList);
         return "admin/editPropertyValue";
     }
 

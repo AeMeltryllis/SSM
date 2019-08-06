@@ -9,6 +9,10 @@
 
 <script>
     $(function() {
+        /**完整的 key press 过程分为两个部分，按键被按下，然后按键被松开并复位
+         * 但是反复key press输入在高并发的情况下会导致不小的压力，需要定时器优化
+          */
+
         $("input.pvValue").keyup(function(){
             var value = $(this).val();
             var page = "admin_propertyValue_update";
@@ -38,10 +42,10 @@
     </ol>
 
     <div class="editPVDiv">
-        <c:forEach items="${pvs}" var="pv">
+        <c:forEach items="${propertyValueList}" var="pv">
             <div class="eachPV">
                 <span class="pvName" >${pv.property.name}</span>
-                <span class="pvValue"><input class="pvValue" pvid="${pv.id}" type="text" value="${pv.value}"></span>
+                <span class="pvValue"><input class="pvValue" pvid="${pv.id}" type="text" value="${pv.value}" placeholder="" ></span>
             </div>
         </c:forEach>
         <div style="clear:both"></div>
