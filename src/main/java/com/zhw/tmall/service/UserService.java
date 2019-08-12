@@ -10,5 +10,9 @@ public interface UserService {
     void update(User c);
     User get(int id);
     List list();
+//    前台确认用户名是否已存在
+    boolean isExist(String name);
+
+    User get(String name, String password);
 
 }

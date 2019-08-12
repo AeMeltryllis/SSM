@@ -13,6 +13,16 @@ public class Review {
 
     private Date createDate;
 
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     public Integer getId() {
         return id;
     }

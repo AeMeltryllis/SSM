@@ -40,4 +40,28 @@ public class UserServiceimpl implements UserService
         return userMapper.selectByExample(example);
 
     }
+
+    @Override
+    public boolean isExist(String name) {
+        UserExample example =new UserExample();
+        example.createCriteria().andNameEqualTo(name);
+        List<User> result= userMapper.selectByExample(example);
+        /*List.isEmpty*/
+        if(!result.isEmpty())
+            return true;
+        return false;
+
+    }
+
+    @Override
+    /*要传name和password是为了方式用户名重复？*/
+    public User get(String name, String password) {
+        UserExample example =new UserExample();
+        example.createCriteria().andNameEqualTo(name).andPasswordEqualTo(password);
+        List<User> result= userMapper.selectByExample(example);
+        if(result.isEmpty())
+            return null;
+        return result.get(0);
+    }
+
 }

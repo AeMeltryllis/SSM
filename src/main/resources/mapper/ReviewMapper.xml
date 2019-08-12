@@ -40,6 +40,7 @@
   <sql id="Base_Column_List">
     id, content, uid, pid, createDate
   </sql>
+
   <select id="selectByExample" parameterType="com.zhw.tmall.pojo.ReviewExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -128,4 +129,9 @@
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="count" resultType="int" parameterType="Integer">
+    SELECT COUNT (*) WHERE id = #{id}
+  </select>
+
 </mapper>

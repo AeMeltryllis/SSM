@@ -12,6 +12,7 @@ public interface ProductImageService {
     void delete(int id);
     void update(ProductImage productImage);
     ProductImage get(int id);
+    /*输入产品id和类型*/
     List list(int pid, String type);
 
 

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
-    @Autowired
+    @Autowired(required = false)
     OrderItemMapper orderItemMapper;
     @Autowired
     ProductService productService;
@@ -77,7 +77,22 @@ public class OrderItemServiceImpl implements OrderItemService {
         o.setOrderItems(orderItemList );
  
     }
- 
+
+    @Override
+    public int getSaleCount(int pid) {
+        OrderItemExample example =new OrderItemExample();
+        example.createCriteria().andPidEqualTo(pid);
+        List<OrderItem> ois =orderItemMapper.selectByExample(example);
+        int result =0;
+        for (OrderItem oi : ois) {
+//            总计销量
+            result+=oi.getNumber();
+        }
+        return result;
+    }
+
+
+
     public void setProduct(List<OrderItem> orderItemList ){
         for (OrderItem oi: orderItemList ) {
             setProduct(oi);
@@ -88,7 +103,8 @@ public class OrderItemServiceImpl implements OrderItemService {
         Product p = productService.get(oi.getPid());
         oi.setProduct(p);
     }
+
  
-    ;
+
  
 }

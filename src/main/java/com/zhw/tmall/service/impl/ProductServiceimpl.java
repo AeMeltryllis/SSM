@@ -6,12 +6,11 @@ import com.zhw.tmall.pojo.Category;
 import com.zhw.tmall.pojo.Product;
 import com.zhw.tmall.pojo.ProductExample;
 import com.zhw.tmall.pojo.ProductImage;
-import com.zhw.tmall.service.CategoryService;
-import com.zhw.tmall.service.ProductImageService;
-import com.zhw.tmall.service.ProductService;
+import com.zhw.tmall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +24,11 @@ public class ProductServiceimpl  implements ProductService{
     CategoryService categoryService;
     @Autowired(required = false)
     ProductImageService productImageService;
+    @Autowired
+    OrderItemService orderItemService;
+    @Autowired
+    ReviewService reviewService;
+
 
     @Override
     public void add(Product product) {
@@ -90,6 +94,62 @@ public class ProductServiceimpl  implements ProductService{
             /*将第一张图片放入*/
             ProductImage pi = pis.get(0);
             product.setFirstProductImage(pi);
+        }
+    }
+
+    @Override
+    /*为分类填充产品集合*/
+    public void fill(List<Category> categorys) {
+        for (Category category:categorys
+             ) {
+            fill(category);
+            
+        }
+
+    }
+
+    @Override
+    /*为多个分类填充产品集合*/
+    public void fill(Category category) {
+        List<Product> productList = list(category.getId());
+        category.setProducts(productList);
+
+    }
+
+    @Override
+    /*为多个分类填充推荐产品集合，即把分类下的产品集合，按照8个为一行，拆成多行，以利于后续页面上进行显示*/
+    public void fillByRow(List<Category> categorys) {
+        /*推荐产品数目*/
+        int productNumberEachRow = 8;
+        for (Category c : categorys) {
+            List<Product> products =  c.getProducts();
+            /*ArrayList<>方便查找*/
+            List<List<Product>> productsByRow =  new ArrayList<>();
+            for (int i = 0; i < products.size(); i+=productNumberEachRow) {
+                int size = i+productNumberEachRow;
+                size= size>products.size()?products.size():size;
+                List<Product> productsOfEachRow =products.subList(i, size);
+                productsByRow.add(productsOfEachRow);
+            }
+            c.setProductsByRow(productsByRow);
+        }
+
+    }
+
+    @Override
+    public void setSaleAndReviewNumber(Product p) {
+        int saleCount = orderItemService.getSaleCount(p.getId());
+        p.setSaleCount(saleCount);
+
+        int reviewCount = reviewService.getCount(p.getId());
+        p.setReviewCount(reviewCount);
+    }
+
+
+    @Override
+    public void setSaleAndReviewNumber(List<Product> ps) {
+        for (Product p : ps) {
+            setSaleAndReviewNumber(p);
         }
     }
 
